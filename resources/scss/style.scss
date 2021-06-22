@@ -38,3 +38,46 @@ section .hero{
         color: $pure;
     }
 }
+
+.btnhome{
+    background-color: $primary;
+    transition: $smooth;
+    &:hover{
+        color: $primary;
+        background-color: $pure;
+        border: 2px solid $primary;
+    }
+}
+
+.cart{
+    background: $secondary;
+}
+
+.amount{
+    color: $primary;
+}
+
+.login{
+    background-color: $secondary;
+    // min-height: calc(100vh-86px) ;
+    min-height: 88vh;
+    a {
+        color: $primary;
+        &:hover{
+            color: $primary-hover;
+        }
+    }
+}
+
+
+.register{
+    background-color: $secondary;
+    // min-height: calc(100vh-86px) ;
+    min-height: 88vh;
+    a {
+        color: $primary;
+        &:hover{
+            color: $primary-hover;
+        }
+    }
+}

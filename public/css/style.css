@@ -12,7 +12,7 @@ nav li:last-child a:hover {
 }
 
 nav li a {
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 nav li a:hover {
   color: #fe5f1e;
@@ -29,10 +29,50 @@ section .hero {
 .addtocart {
   border: 2px solid #fe5f1e;
   color: #fe5f1e;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .addtocart:hover {
   background: #fe5f1e;
   border-color: #fff;
   color: #fff;
+}
+
+.btnhome {
+  background-color: #fe5f1e;
+  transition: all 0.2s ease-in-out;
+}
+.btnhome:hover {
+  color: #fe5f1e;
+  background-color: #fff;
+  border: 2px solid #fe5f1e;
+}
+
+.cart {
+  background: #f8f8f8;
+}
+
+.amount {
+  color: #fe5f1e;
+}
+
+.login {
+  background-color: #f8f8f8;
+  min-height: 88vh;
+}
+.login a {
+  color: #fe5f1e;
+}
+.login a:hover {
+  color: #b23301;
+}
+
+.register {
+  background-color: #f8f8f8;
+  min-height: 88vh;
+}
+.register a {
+  color: #fe5f1e;
+}
+.register a:hover {
+  color: #b23301;
 }
