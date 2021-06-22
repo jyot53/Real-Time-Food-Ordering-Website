@@ -6,7 +6,9 @@ const path = require('path');
 const port = process.env.PORT || 8000;
 
 const viewsPath = path.join(__dirname,'/resources/views');
+const staticPath = path.join(__dirname,'/public');
 
+app.use(express.static(staticPath));
 app.get("/",(req,res)=>{
     res.render("home");    
 });
