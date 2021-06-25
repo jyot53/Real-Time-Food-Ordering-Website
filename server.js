@@ -8,6 +8,7 @@ const session = require('express-session');
 const flash = require('express-flash'); //Flash Messages for your Express Application
 const MongoDbStore = require('connect-mongo'); //to store cookies in mongo database rather than in memory which is default;
 const path = require('path');
+const passport = require('passport');
 const port = process.env.PORT || 8000;
 
 const viewsPath = path.join(__dirname,'/resources/views');
@@ -47,16 +48,27 @@ app.use(session({
     }
   }));
 
+  
+//passport configuration
+const passportinit = require("./app/config/passport");
+passportinit(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(flash());
 
 //Assests
 app.use(express.static(staticPath));
 
-app.use(express.json()); //to get the json data from the client
+app.use(express.json()); //to get/receive the json data from the client
+app.use(express.urlencoded({
+    extended:false
+}));
 
 //Global middleware
 app.use((req, res, next) => {
     res.locals.session = req.session;
+    res.locals.user = req.user;
     next();
   });
   
