@@ -74,7 +74,7 @@ app.use((req, res, next) => {
   
 
 //Set the template engine
-app.use(expressLayout);
+app.use(expressLayout); //default name is layout.ejs
 app.set('views',viewsPath);
 app.set('view engine','ejs');
 

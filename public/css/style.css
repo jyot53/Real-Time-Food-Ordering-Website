@@ -219,3 +219,12 @@ section .hero {
   margin: 10px 20px;
   border-radius: 10px;
 }
+
+.link {
+  color: #fe5f1e;
+  transition: all 0.2s ease-in-out;
+}
+.link:hover {
+  color: #b23301;
+  border-bottom: 2px solid #fe5f1e;
+}

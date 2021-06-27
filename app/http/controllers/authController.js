@@ -1,6 +1,13 @@
 const user = require('../../models/user');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+
+function _getRedirectUrl(req){
+    if(req.user.role == "admin"){
+        return "/admin/orders";
+    }
+    return "/customer/orders";
+}
 function authController() {
     return {
         login(req, res) {
@@ -66,7 +73,7 @@ function authController() {
                         return next(err);
                     }
 
-                    return res.redirect('/');
+                    return res.redirect(_getRedirectUrl(req));
                });
             })(req,res,next);
 

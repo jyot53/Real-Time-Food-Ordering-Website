@@ -93,3 +93,12 @@ section .hero{
     margin: 10px 20px;
     border-radius: 10px;
 }
+
+.link{
+    color: $primary;
+    transition: $smooth;
+    &:hover{
+        color: $primary-hover;
+        border-bottom: 2px solid $primary;
+    }
+}
