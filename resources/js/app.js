@@ -35,7 +35,36 @@ if (alertMsg) {
     }, 4000);
 }
 
-function initAdmin() {
+//change the order status by adding the step-completed and current class
+let statuses = document.querySelectorAll('.status_line');
+let hiddenInput = document.querySelector('#hiddenInput')
+let order = hiddenInput ? hiddenInput.value : null;
+order = JSON.parse(order);
+let time = document.createElement('small');
+
+function updateStatus(order) {
+    statuses.forEach((status) => {
+        status.classList.remove('step-completed');
+        status.classList.remove('current');
+    });
+    let stepCompleted = true;
+    statuses.forEach((status) => {
+        let dataprop = status.dataset.status;
+        if (stepCompleted) {
+            status.classList.add('step-completed');
+        }
+        if (dataprop === order.status) {
+            stepCompleted = false;
+            time.innerText = moment(order.updatedAt).format('hh:mm A');
+            status.appendChild(time);
+            if (status.nextElementSibling) {
+                status.nextElementSibling.classList.add('current');
+            }
+        }
+    });
+}
+
+function initAdmin(socket) {
     const orderTableBody = document.querySelector('#orderTableBody');
     let orders = [];
     let markup;
@@ -51,6 +80,13 @@ function initAdmin() {
     }).catch(err => {
         console.log("axios error " + err);
     });
+
+    socket.on('orderPlaced', (order) => {
+        notie.alert({ type: 'success', text: `New Order Recieved`, time: 1, position: "top" });
+        orders.unshift(order);
+        orderTableBody.innerHTML = generateMarkup(orders);
+    });
+
 }
 
 function renderItems(items) {
@@ -105,4 +141,28 @@ function generateMarkup(orders) {
     }).join('');
 }
 
-initAdmin();
+
+updateStatus(order);
+
+//socket client side
+let socket = io();
+initAdmin(socket);
+
+//join
+if (order) {
+    socket.emit('join', `order_${order._id}`);
+}
+
+let adminAreaPath = window.location.pathname;
+if (adminAreaPath.includes('admin')) {
+    //join (it will create a room with the name adminRoom)
+    socket.emit('join', 'adminRoom');
+}
+
+socket.on('orderUpdated', (data) => {
+    const updatedOrder = {...order };
+    updatedOrder.updatedAt = moment().format();
+    updatedOrder.status = data.status;
+    updateStatus(updatedOrder);
+    notie.alert({ type: 'success', text: `Order Status Updated to ${data.status}`, time: 1, position: "top" });
+});

@@ -2,103 +2,219 @@
 // @import '~/noty/src/noty.scss';
 // @import '~/noty/src/themes/mint.scss';
 @import '../../node_modules/notie/src/notie';
-
-body{
-    font-family: 'Lata',sans-serif;
-    -webkit-font-smoothing : antialiased;
+body {
+    font-family: 'Lata', sans-serif;
+    -webkit-font-smoothing: antialiased;
     color: $dark;
 }
 
 nav li:last-child a {
     background: $primary;
-
-    &:hover{
+    &:hover {
         background: $primary-hover;
-        }
-}
-
-nav li a{
-    transition: $smooth;
-    &:hover{
-    color: $primary;
     }
 }
 
-section .hero{
+nav li a {
+    transition: $smooth;
+    &:hover {
+        color: $primary;
+    }
+}
+
+section .hero {
     background: $secondary;
 }
 
-.size{
+.size {
     background: $secondary;
 }
-.addtocart{
+
+.addtocart {
     border: 2px solid $primary;
     color: $primary;
     transition: $smooth;
-    &:hover{
+    &:hover {
         background: $primary;
         border-color: $pure;
         color: $pure;
     }
-    &:focus{
+    &:focus {
         outline: none;
     }
 }
 
-.btnhome{
+.btnhome {
     background-color: $primary;
     transition: $smooth;
-    &:hover{
+    &:hover {
         color: $primary;
         background-color: $pure;
         border: 2px solid $primary;
     }
 }
 
-.cart{
+.cart {
     background: $secondary;
 }
 
-.amount{
+.amount {
     color: $primary;
 }
 
-.login{
+.login {
     background-color: $secondary;
     // min-height: calc(100vh-86px) ;
     min-height: 88vh;
     a {
         color: $primary;
-        &:hover{
+        &:hover {
             color: $primary-hover;
         }
     }
 }
 
-
-.register{
+.register {
     background-color: $secondary;
     // min-height: calc(100vh-86px) ;
     min-height: 88vh;
     a {
         color: $primary;
-        &:hover{
+        &:hover {
             color: $primary-hover;
         }
     }
 }
 
-.notie-container{
+.notie-container {
     width: 30%;
     margin: 10px 20px;
     border-radius: 10px;
 }
 
-.link{
+.link {
     color: $primary;
     transition: $smooth;
-    &:hover{
+    &:hover {
         color: $primary-hover;
         border-bottom: 2px solid $primary;
     }
+}
+
+section.status {
+    background: $secondary;
+    min-height: calc(100vh - 86px);
+}
+
+.status-box {
+    padding: 60px 0 0;
+}
+
+.status-box ul li span {
+    position: relative;
+    padding-left: 20px;
+}
+
+//dots of status page (single order)
+.status-box ul li span:after {
+    content: '';
+    position: absolute;
+    background: $dark;
+    width: 10px;
+    height: 10px;
+    left: -10px;
+    top: 50%;
+    border-radius: 50%;
+    transform: translateY(-50%); //or height/2
+    box-shadow: 0 0 1px 10px $secondary;
+}
+
+// icons 
+.status-box ul li span:before {
+    font-family: "Line Awesome Free";
+    font-size: 46px;
+    font-weight: 600;
+    position: absolute;
+    left: -90px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: inherit;
+}
+
+.status-box ul {
+    margin-left: 84px;
+}
+
+.status-box ul li:nth-child(1) span:before {
+    content: '\f46c';
+}
+
+.status-box ul li:nth-child(2) span:before {
+    content: '\f560';
+}
+
+.status-box ul li:nth-child(3) span:before {
+    content: '\f818';
+}
+
+.status-box ul li:nth-child(4) span:before {
+    content: '\f0d1';
+}
+
+.status-box ul li:nth-child(5) span:before {
+    content: '\f582';
+}
+
+.status-box ul li {
+    position: relative;
+}
+
+//line 
+.status-box ul li:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -6px;
+    width: 2px;
+    height: 100%;
+    background: $dark;
+    margin-top: 10px;
+}
+
+//last dot 
+.status-box ul li:nth-child(5) span:after {
+    box-shadow: 0 20px 1px 20px $secondary;
+}
+
+//line gray
+.status-box ul li.step-completed:before {
+    background: $gray;
+}
+
+//dot gray
+.status-box ul li.step-completed span:after {
+    background: $gray;
+}
+
+//icon will automatically become gray due to color:inherit property
+//text gray
+.status-box ul li.step-completed span {
+    color: $gray;
+}
+
+//current status (orange status)
+//text orange
+.status-box ul li.current span {
+    color: $primary;
+}
+
+//dot orange
+.status-box ul li.current span:after {
+    background: $primary;
+}
+
+.status-box ul li small {
+    float: right;
+    font-size: 18px;
+    margin-top: 8px;
 }

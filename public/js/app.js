@@ -1848,6 +1848,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var notie__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(notie__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 // console.log("done!!!");
 
 
@@ -1886,9 +1892,41 @@ if (alertMsg) {
   setTimeout(function () {
     alertMsg.remove();
   }, 4000);
+} //change the order status by adding the step-completed and current class
+
+
+var statuses = document.querySelectorAll('.status_line');
+var hiddenInput = document.querySelector('#hiddenInput');
+var order = hiddenInput ? hiddenInput.value : null;
+order = JSON.parse(order);
+var time = document.createElement('small');
+
+function updateStatus(order) {
+  statuses.forEach(function (status) {
+    status.classList.remove('step-completed');
+    status.classList.remove('current');
+  });
+  var stepCompleted = true;
+  statuses.forEach(function (status) {
+    var dataprop = status.dataset.status;
+
+    if (stepCompleted) {
+      status.classList.add('step-completed');
+    }
+
+    if (dataprop === order.status) {
+      stepCompleted = false;
+      time.innerText = moment__WEBPACK_IMPORTED_MODULE_2___default()(order.updatedAt).format('hh:mm A');
+      status.appendChild(time);
+
+      if (status.nextElementSibling) {
+        status.nextElementSibling.classList.add('current');
+      }
+    }
+  });
 }
 
-function initAdmin() {
+function initAdmin(socket) {
   var orderTableBody = document.querySelector('#orderTableBody');
   var orders = [];
   var markup;
@@ -1902,6 +1940,16 @@ function initAdmin() {
     orderTableBody.innerHTML = markup;
   })["catch"](function (err) {
     console.log("axios error " + err);
+  });
+  socket.on('orderPlaced', function (order) {
+    notie__WEBPACK_IMPORTED_MODULE_1___default().alert({
+      type: 'success',
+      text: "New Order Recieved",
+      time: 1,
+      position: "top"
+    });
+    orders.unshift(order);
+    orderTableBody.innerHTML = generateMarkup(orders);
   });
 }
 
@@ -1918,7 +1966,35 @@ function generateMarkup(orders) {
   }).join('');
 }
 
-initAdmin();
+updateStatus(order); //socket client side
+
+var socket = io();
+initAdmin(socket); //join
+
+if (order) {
+  socket.emit('join', "order_".concat(order._id));
+}
+
+var adminAreaPath = window.location.pathname;
+
+if (adminAreaPath.includes('admin')) {
+  //join (it will create a room with the name adminRoom)
+  socket.emit('join', 'adminRoom');
+}
+
+socket.on('orderUpdated', function (data) {
+  var updatedOrder = _objectSpread({}, order);
+
+  updatedOrder.updatedAt = moment__WEBPACK_IMPORTED_MODULE_2___default()().format();
+  updatedOrder.status = data.status;
+  updateStatus(updatedOrder);
+  notie__WEBPACK_IMPORTED_MODULE_1___default().alert({
+    type: 'success',
+    text: "Order Status Updated to ".concat(data.status),
+    time: 1,
+    position: "top"
+  });
+});
 
 /***/ }),
 
