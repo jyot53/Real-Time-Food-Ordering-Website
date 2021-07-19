@@ -16,7 +16,8 @@ const viewsPath = path.join(__dirname, '/resources/views');
 const staticPath = path.join(__dirname, '/public');
 
 //Database Connection
-mongoose.connect("mongodb://localhost:27017/realtimeordering", {
+// const url = "mongodb://localhost:27017/realtimeordering";
+mongoose.connect(process.env.MONGO_CONNECTION_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -84,6 +85,9 @@ app.set('views', viewsPath);
 app.set('view engine', 'ejs');
 
 require("./routes/web")(app); //all the routes are called from here 
+app.get("*", (req, res) => {
+    res.status(404).render('404');
+});
 
 const server = app.listen(port, () => {
     console.log(`Listening to the port ${port}`);
